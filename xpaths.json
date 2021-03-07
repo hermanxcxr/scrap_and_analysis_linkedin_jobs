@@ -1,0 +1,12 @@
+{    "username_box":"//input[@id='username']",
+    "passw_box":"//input[@id='password']",
+    "start_button_0":"//button[@type='submit']",
+    "job_box":"//input[starts-with(@id,'jobs-search-box-keyword')]",
+    "location_box":"//input[starts-with(@id,'jobs-search-box-location')]",
+    "remote_button":"//button[starts-with(@aria-label,'Filtro «Remotamente».')]",
+    "remote_check":"//div[3]/div[3]/section/div/div/div/div[1]/div/div[2]/ul/li[7]/div/div/div/div[1]/div/form/fieldset/div[1]/ul/li/label/p/span",
+    "remote_rbutton":"//div[3]/div[3]/section/div/div/div/div[1]/div/div[2]/ul/li[7]/div/div/div/div[1]/div/form/fieldset/div[2]/button[2]",
+    "pub_time_button":"//button[starts-with(@aria-label,'Filtro «Fecha de publicación».')]",
+    "pub_time_check":"//div[@class='pl4 pr6']/ul/li[3]/label/p/span",
+    "pub_time_rbutton":"//div[@class='artdeco-hoverable-content__shell']/div/form/fieldset/div[2]/button[2]/span",
+    "paginas":"//ul[@class='artdeco-pagination__pages artdeco-pagination__pages--number']"  }
