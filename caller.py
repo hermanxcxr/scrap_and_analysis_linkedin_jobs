@@ -1,4 +1,3 @@
-from job_info import printer
 from job_info import each_job
 from validator import Validate
 from file_maker import FileMaker
@@ -9,23 +8,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import TimeoutException
+#from selenium.common.exceptions import TimeoutException
 
 import time
-#import pandas as pd
 import json
              
 def on_going(jobs_list,last_value,xpath,driver,delay):
-    if last_value == 1:
-        time.sleep(1)
+    
+    if last_value == 1:        
         each_job(jobs_list,driver,delay) #programa que descarga la información jobs
-        #print(1)
+        print('identificador: {1},i: {1}')
     elif last_value > 1: 
-        time.sleep(1)
         botones = []
         i= 2
         three_points = "…"
         while i <= 20 and i <= last_value+1: #MAX 20 páginas 
+            
             each_job(jobs_list,driver,delay) #programa que descarga la información
             
             paginas = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpath)))
@@ -42,15 +40,6 @@ def on_going(jobs_list,last_value,xpath,driver,delay):
             print('identificador: {},i: {}'.format(identificador,i))
             i += 1
     return jobs_list
-
-def un(a):
-    printer(a)
-
-def uno(job="python",location="colombia",remote=False,last_week=True):
-    print(job)
-    print(location)
-    print(remote)
-    print(last_week)
 
 def dos(job="python",location="colombia",remote=False,last_week=True):
 
@@ -121,6 +110,7 @@ def dos(job="python",location="colombia",remote=False,last_week=True):
     #avanzar a lo largo de las páginas
     jobs_list = []
     on_going(jobs_list,last_value,xpaths["paginas"],driver,delay)
+    print(jobs_list)
     excel_file = FileMaker(jobs_list,job,location,remote,last_week)
     excel_file.df_2_file()
 
@@ -136,13 +126,11 @@ if __name__ == "__main__":
         remote = input("Remoto, presione Y/N: ")
         remote_val = Validate(remote,remote_flag)
         remote, remote_flag = remote_val.validation()
-    #print(remote)
 
     last_week_flag = False
     while last_week_flag == False:
         last_week = input("Última semana, presione Y/N: ")
         last_week_val = Validate(last_week,last_week_flag)
         last_week, last_week_flag = last_week_val.validation()
-    #print(last_week)
     
     dos(job,location,remote,last_week)
