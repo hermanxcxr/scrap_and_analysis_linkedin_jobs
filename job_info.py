@@ -19,7 +19,8 @@ def each_job(jobs_list,driver,delay):
         try:
             job_name = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').text
             job_link = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').get_attribute('href')
-            job.click()
+            job_obj = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]')
+            job_obj.click()
 
             description = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,'//div[@id="job-details"]/span'))).text
             subl = driver.find_elements_by_xpath('.//div[@class="jobs-box__group"]')
