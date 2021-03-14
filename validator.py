@@ -17,3 +17,13 @@ class Validate:
             self.flag = False
             self.value = 0
             return self.value, self.flag
+    
+    def lang_validation(self):
+        if self.x == "es" or self.x == "en":
+            self.flag = True
+            self.value = self.x
+            return self.value, self.flag
+        else:
+            self.flag = False
+            self.value = 0
+            return self.value, self.flag

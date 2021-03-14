@@ -76,9 +76,12 @@ def each_job(jobs_list,driver,delay):
                 dict["type_0"] = False
         except:
             pass
-        finally:
+        try:
             dict["url"] = job_link
-            dict["description"] = description        
+            dict["description"] = description 
+        except:
+            pass
+        finally:       
             print("********{}".format(num+1))
             jobs_list.append(dict)
     return jobs_list
