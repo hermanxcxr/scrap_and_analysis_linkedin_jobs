@@ -56,4 +56,4 @@ class FileMaker:
                 df.loc[i,'description'] = self.jobs_list[i]["description"]
             except:
                 pass
-        df.to_excel('outputs/{}_{}_rmt_{}_lw_{}.xlsx'.format(self.job,self.location,self.remote,self.last_week))
+        df.to_excel('outputs/{}_{}_rmt_{}_lw_{}.xlsx'.format(self.job,self.location,self.remote,self.last_week),index_label="index")

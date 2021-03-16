@@ -27,3 +27,17 @@ class Validate:
             self.flag = False
             self.value = 0
             return self.value, self.flag
+
+    def column_validation(self):
+        if self.x == "D" or self.x == "d":
+            self.flag = True
+            self.value = "description"
+            return self.value, self.flag
+        elif self.x == "N" or self.x == "n":
+            self.flag = True
+            self.value = "name"
+            return self.value, self.flag
+        else:
+            self.flag = False
+            self.value = 0
+            return self.value, self.flag
