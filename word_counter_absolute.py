@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 import json
 import re
+import matplotlib.pyplot as plt
+from collections import Counter
 
 import tkinter.filedialog
 
@@ -15,11 +17,53 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 
+def plotting(x,y,DF_name,df_shape_0):
+  
+  plt.figure(figsize=[40,10])
+  plt.title("Habs. requeridas: {}".format(DF_name), fontsize=24)
+  bars = plt.bar(list(x),height = list(y))
+  plt.xticks(rotation = 85, fontsize=18)
+  plt.yticks(rotation = 85, fontsize=18)
+  for bar in bars:
+    yval = bar.get_height()
+    plt.text(bar.get_x(),
+             yval+.05,
+             "{}/{}\n{}%".format(yval,df_shape_0,round(yval*100/df_shape_0,1)),
+             rotation=45,
+             fontsize=10
+             )
+  plt.show() 
+  
+  
+def values_dict(df,title):
+
+  counter_dict = {}
+  
+  if df.loc[0,"freq_dist_key"] != '{}':
+    dict_total_0 = df.loc[0,"freq_dist_key"]
+    #print(dict_total_0)
+    for key_1,value_1 in dict_total_0.items():
+      counter_dict[[key_1][0]] = dict_total_0[key_1][3]
+
+  for i in range(1,df.shape[0]):
+    if df.loc[i,"freq_dist_key"] != '{}':
+      main_dict = df.loc[i,"freq_dist_key"]
+      #print(main_dict)
+      temp_dict = {}
+      for key_1,value_1 in main_dict.items():
+        temp_dict[[key_1][0]] = main_dict[key_1][3]
+      #print(temp_dict)
+      counter_dict = dict(Counter(temp_dict)+Counter(counter_dict)) 
+      #print(counter_dict)
+      #print('*********')
+
+  plotting(counter_dict.keys(),counter_dict.values(),title,df.shape[0]) 
+
+
 def keyword_frequency_distribution(distribution_list,regexs_dictionary):
   distribution_dict = dict(distribution_list)
   key_dist_dict = {}
   for key_1, value_1 in regexs_dictionary.items():
-  #for word in i:
     for key_2,value_2 in distribution_dict.items():
       pattern = re.compile(value_1)
       result = re.search(pattern,key_2)
@@ -31,12 +75,10 @@ def keyword_frequency_distribution(distribution_list,regexs_dictionary):
 def word_frequency_distribution(texto):
   
   #detecta el lenguaje del texto
-  #if language == "none":
   language = detect(texto)
   
   if language == 'en':
       language = "english"
-  #if language == 'es':
   else:
       language = "spanish"
   #print(language)
@@ -56,87 +98,45 @@ def word_frequency_distribution(texto):
 
 def most_common_suma_name(df): 
   '''
-  column_flag = False
-  while column_flag == False:
-    column = input("Filtrar por nombre(N) o descripción(D): ")
-    column_validator = Validate(column,column_flag)
-    column, column_flag = column_validator.column_validation()
-  if column == "description":
-    df = df.loc[df.description.str.contains(word),:] #contains,startswith #Test if pattern or regex is contained
-  else:
-    df = df.loc[df.name.str.contains(word),:]
+  
   '''
+  
   with open("inputs\description_regex_tokens.json","r") as file:
     key_regexs = json.load(file)
   file.close()
 
   df["frequency_dist"] = df["description"].apply(lambda x: word_frequency_distribution(x))
-  df["freq_dist_key"] = df["frequency_dist"].apply(lambda x: keyword_frequency_distribution(x,key_regexs))
-  
+  df["freq_dist_key"] = df["frequency_dist"].apply(lambda x: keyword_frequency_distribution(x,key_regexs))  
   df = df.reset_index()
-
-  '''
-  try:
-    #print(df.shape)
-    #df.shape
-    suma = df.loc[0,"frequency_dist"]
-    #df.head()
-    for i in range(1,df.shape[0]):
-        suma = suma + df.loc[i,"frequency_dist"]
-  except  UnboundLocalError as e:
-    print(e)
-    print("no hay coincidencias con el filtro, {}".format(e))
-  except KeyError as e:
-    print("no hay coincidencias con el filtro, {}".format(e))
-  '''
+  df = df.drop(columns=['index'])
   return df
 
 def one(language,file_root):
   '''
+  Convierte un archivo de excel creado con caller.py en otro, que contiene la
+  frecuencia de las palabras clave especificadas en "description_regex_tokens"
+  en cada vacante, luego grafica con que frecuencia cada habilidad es requerida 
+  en la totalidad de los vacantes
   DF + Lang  => MCSN ^ Regexs => DF_rel a Regex y  SUMA(lista de palabras)
   '''
-  #print(language)
-  #se debe poder escoger el archivo a evaluar y df
-  #print(file_root)
-  #print(type(file_root))
+
   df = pd.read_excel(file_root, index_col='index')
-  '''
-  python_colombia_rmt_False_lw_False.xlsx
-  odontologo_colombia_rmt_False_lw_True.xlsx
-  '''
-  #df = pd.read_excel("outputs/python_colombia_rmt_False_lw_False.xlsx", index_col='index')
   df["language"] = df["description"].apply(lambda x: detect(x))
+  total_rows = df.shape[0]
   if language == 'es' or language == "en":
     df = df[df["language"] == language]
     df = df.reset_index()
   
-  total_rows = df.shape[0]
-  #se debe poder escoger la regex de filtrado
-  #word = input("RegEx para filtrar (entre corchetes): ")
-  #suma, df = most_common_suma_name(df,word,language)
   df = most_common_suma_name(df)
-
-  filtered_rows = df.shape[0]
+  
+  filtered_rows = df.shape[0]  
   jobs_percentage = round(filtered_rows / total_rows * 100,2)
+  print('{} de {} vacantes en {},equivalente al {}%'.format(filtered_rows,total_rows,language,jobs_percentage))
 
   file_name_a = re.search(re.compile('[\w\d]{10,}.xlsx'),file_root)
 
-  df.to_excel('outputs/{}_FD.xlsx'.format(file_name_a[0],index_label="index"))
-  
- 
-  #print("Cantidad de palabras detectadas: {}".format(len(suma)))
-  #twenty_percent = round(0.2 * len(suma))
-  #print('{} empleos de {} vacantes,equivalente al {}%'.format(filtered_rows,total_rows,jobs_percentage))
-  #print(suma.most_common(twenty_percent))
-  #file_name_b = re.sub("[^\w]","",word)
-  #file_name = file_name_a[0] + file_name_b
-  #print(file_name)
-  #with open('outputs/{}.json'.format(file_name_a),'w') as outfile:
-    #value = dict(suma)
-  #  value = dict(suma.most_common(twenty_percent))
-  #  json.dump(value,outfile)
-  
-  #suma_most_common_words_plotter(suma,twenty_percent)
+  df.to_excel('outputs/{}_AWC.xlsx'.format(file_name_a[0]),index_label="index")
+  values_dict(df,file_name_a[0])
 
 if __name__ == "__main__":
     
