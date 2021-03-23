@@ -9,8 +9,8 @@ def suma_most_common_words_plotter(todos,maximo):
   for x in most_common_group:
       y_val.append(x[1])
   plt.figure(figsize=(80,80))
-  plt.xticks(rotation = 90, fontsize=32)
-  plt.yticks(fontsize=32)
+  plt.xticks(rotation = 90, fontsize=24)
+  plt.yticks(fontsize=24)
   #plt.xlabel(fontsize=24)
   plt.bar(x_val,y_val)
   plt.show()

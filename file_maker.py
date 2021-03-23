@@ -4,7 +4,7 @@ class FileMaker:
 
     def __init__(self,jobs_list,job,location,remote,last_week):
         self.jobs_list = jobs_list
-        self.job = job
+        self.job = job.replace(" ","_")
         self.location = location
         self.remote = str(remote)
         self.last_week = str(last_week)

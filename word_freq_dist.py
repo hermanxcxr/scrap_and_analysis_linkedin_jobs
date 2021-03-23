@@ -6,16 +6,20 @@ from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 #from nltk import word_tokenize
 
+from langdetect import detect
+
 def word_frequency_distribution(texto,language):
     '''
     delete punctuation => tokenize => delete stopwords => FreqDist
     '''
-
+    if language == "none":
+        language = detect(texto)
+    
     if language == 'es':
         language = "spanish"
     elif language == 'en':
         language = "english"
-
+    print(language)
     '''
     esto parece que no tiene utilidad
     if self.language == "spanish":

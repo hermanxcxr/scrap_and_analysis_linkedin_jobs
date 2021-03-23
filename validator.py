@@ -19,7 +19,7 @@ class Validate:
             return self.value, self.flag
     
     def lang_validation(self):
-        if self.x == "es" or self.x == "en":
+        if self.x == "es" or self.x == "en" or self.x == "none":
             self.flag = True
             self.value = self.x
             return self.value, self.flag

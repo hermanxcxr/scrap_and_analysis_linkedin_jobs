@@ -37,9 +37,11 @@ def most_common_suma_name(df,word,language):
   return suma, df
 
 def one(language,file_root):
-    
+    '''
+    DF + Lang + Regex => MCSN => DF_rel a Regex y  SUMA(lista de palabras)
+    '''
+    #print(language)
     #se debe poder escoger el archivo a evaluar y df
-    
     #print(file_root)
     #print(type(file_root))
     df = pd.read_excel(file_root, index_col='index')
@@ -49,8 +51,10 @@ def one(language,file_root):
     '''
     #df = pd.read_excel("outputs/python_colombia_rmt_False_lw_False.xlsx", index_col='index')
     df["language"] = df["description"].apply(lambda x: detect(x))
-    df = df[df["language"] == language]
-    df = df.reset_index()
+    if language == 'es' or language == "en":
+      df = df[df["language"] == language]
+      df = df.reset_index()
+    
     total_rows = df.shape[0]
     #se debe poder escoger la regex de filtrado
     word = input("RegEx para filtrar (entre corchetes): ")
@@ -74,23 +78,26 @@ def one(language,file_root):
     print(suma.most_common(twenty_percent))
     
     file_name_a = re.search(re.compile('[\w\d]{10,}.xlsx'),file_root)
-    file_name_b = re.sub("[^\w]","_",word)
+    file_name_b = re.sub("[^\w]","",word)
     file_name = file_name_a[0] + file_name_b
     print(file_name)
     
     with open('outputs/{}.json'.format(file_name),'w') as outfile:
-      value = dict(suma.most_common(twenty_percent))
+      value = dict(suma)
+      #value = dict(suma.most_common(twenty_percent))
       json.dump(value,outfile)
     
-    suma_most_common_words_plotter(suma,twenty_percent)
+    #suma_most_common_words_plotter(suma,twenty_percent)
 
 if __name__ == "__main__":
     
     file_root = tkinter.filedialog.askopenfilename()
 
+
+
     language_flag = False
     while language_flag == False:
-        language = input("Idioma, ingrese es/en: ")
+        language = input("Contar por idioma?, ingrese es/en/none: ")
         lang_validator = Validate(language,language_flag)
         language, language_flag = lang_validator.lang_validation()
     
