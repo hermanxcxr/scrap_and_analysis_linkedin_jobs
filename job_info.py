@@ -32,7 +32,7 @@ def each_job(jobs_list,driver,delay):
         print(job_name)    
         
         try:
-            job_name = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').text
+            #job_name = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').text
             job_link = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').get_attribute('href')
             job_obj = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]')
             job_obj.click()
@@ -40,6 +40,10 @@ def each_job(jobs_list,driver,delay):
             description = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpaths["description"]))).text
             subcats = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpaths["subcats"])))            
             
+            if job_name:
+                dict["name"] = job_name
+            else:
+                dict["name"] = "null"
             #job features
             for sub_obj in subcats:
                 key = sub_obj.find_element_by_xpath("./h3").text
@@ -65,7 +69,7 @@ def each_job(jobs_list,driver,delay):
             pass
         try:   
             #job_inc = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,''))).text
-            job_inc = job.find_element_by_xpath('.//a[@class="job-card-container__link job-card-container__company-name ember-view"]')
+            job_inc = job.find_element_by_xpath('.//a[@class="job-card-container__link job-card-container__company-name ember-view"]').text
             if job_inc:
                 dict["company"] = job_inc
             else:
