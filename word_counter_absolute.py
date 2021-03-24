@@ -1,12 +1,11 @@
 from validator import Validate
+from abs_plot_values import values_dict
 
 from langdetect import detect
 import pandas as pd 
 import numpy as np
 import json
 import re
-import matplotlib.pyplot as plt
-from collections import Counter
 
 import tkinter.filedialog
 
@@ -16,49 +15,6 @@ from nltk import FreqDist
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
-
-def plotting(x,y,DF_name,df_shape_0):
-  
-  plt.figure(figsize=[40,10])
-  plt.title("Habs. requeridas: {}".format(DF_name), fontsize=24)
-  bars = plt.bar(list(x),height = list(y))
-  plt.xticks(rotation = 85, fontsize=18)
-  plt.yticks(rotation = 85, fontsize=18)
-  for bar in bars:
-    yval = bar.get_height()
-    plt.text(bar.get_x(),
-             yval+.05,
-             "{}/{}\n{}%".format(yval,df_shape_0,round(yval*100/df_shape_0,1)),
-             rotation=45,
-             fontsize=10
-             )
-  plt.show() 
-  
-  
-def values_dict(df,title):
-
-  counter_dict = {}
-  
-  if df.loc[0,"freq_dist_key"] != '{}':
-    dict_total_0 = df.loc[0,"freq_dist_key"]
-    #print(dict_total_0)
-    for key_1,value_1 in dict_total_0.items():
-      counter_dict[[key_1][0]] = dict_total_0[key_1][3]
-
-  for i in range(1,df.shape[0]):
-    if df.loc[i,"freq_dist_key"] != '{}':
-      main_dict = df.loc[i,"freq_dist_key"]
-      #print(main_dict)
-      temp_dict = {}
-      for key_1,value_1 in main_dict.items():
-        temp_dict[[key_1][0]] = main_dict[key_1][3]
-      #print(temp_dict)
-      counter_dict = dict(Counter(temp_dict)+Counter(counter_dict)) 
-      #print(counter_dict)
-      #print('*********')
-
-  plotting(counter_dict.keys(),counter_dict.values(),title,df.shape[0]) 
-
 
 def keyword_frequency_distribution(distribution_list,regexs_dictionary):
   distribution_dict = dict(distribution_list)

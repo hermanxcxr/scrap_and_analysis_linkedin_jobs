@@ -6,9 +6,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 
-def printer(a):
-    print(a)
-
 def each_job(jobs_list,driver,delay):
     
     found_jobs=WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,'//ul[starts-with(@class,"jobs-search-results")]')))
