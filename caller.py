@@ -49,7 +49,7 @@ def dos(job="python",location="colombia",remote=False,last_week=True):
     with open('xpaths.json','r',encoding='utf-8') as f:
         xpaths = json.load(f)
 
-    '''
+    
     #Ejecución en primer plano
     options = webdriver.ChromeOptions() #Instanciar driver
     driver = webdriver.Chrome(executable_path="../chromedriver.exe", options=options)
@@ -60,7 +60,7 @@ def dos(job="python",location="colombia",remote=False,last_week=True):
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
     driver = webdriver.Chrome(executable_path="../chromedriver.exe", options=chrome_options)
-    
+    '''
     try:
         #INTERACTIVIDAD
         delay = 10
