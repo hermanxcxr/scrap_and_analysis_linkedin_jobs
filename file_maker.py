@@ -4,7 +4,7 @@ class FileMaker:
 
     def __init__(self,jobs_list,job,location,remote,last_week):
         self.jobs_list = jobs_list
-        self.job = job
+        self.job = job.replace(" ","_")
         self.location = location
         self.remote = str(remote)
         self.last_week = str(last_week)
@@ -56,4 +56,4 @@ class FileMaker:
                 df.loc[i,'description'] = self.jobs_list[i]["description"]
             except:
                 pass
-        df.to_excel('outputs/{}_{}_rmt_{}_lw_{}.xlsx'.format(self.job,self.location,self.remote,self.last_week))
+        df.to_excel('outputs/{}_{}_rmt_{}_lw_{}.xlsx'.format(self.job,self.location,self.remote,self.last_week),index_label="index")

@@ -32,11 +32,10 @@ def each_job(jobs_list,driver,delay):
         print(job_name)    
         
         try:
-            time.sleep(2)
-            job_name = WebDriverWait(job,delay).until(EC.presence_of_element_located((By.XPATH,'.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]'))).text
-            job_link = WebDriverWait(job,delay).until(EC.presence_of_element_located((By.XPATH,'.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]'))).get_attribute('href')
-            #job_name = job.find_element_by_xpath(xpaths["job_name"]).text
-            job.click()
+            job_name = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').text
+            job_link = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]').get_attribute('href')
+            job_obj = job.find_element_by_xpath('.//a[@class="disabled ember-view job-card-container__link job-card-list__title"]')
+            job_obj.click()
 
             description = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpaths["description"]))).text
             subcats = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpaths["subcats"])))            
@@ -89,11 +88,12 @@ def each_job(jobs_list,driver,delay):
                 dict["type_0"] = False
         except:
             pass
-        finally:
-            dict["company"] = job_inc
-            dict["name"] = job_name
+        try:
             dict["url"] = job_link
-            dict["description"] = description        
+            dict["description"] = description 
+        except:
+            pass
+        finally:       
             print("********{}".format(num+1))
             jobs_list.append(dict)
     return jobs_list

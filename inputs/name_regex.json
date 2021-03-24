@@ -1,0 +1,11 @@
+{
+    "desarrollador":"[devel|DEVEL|DESAR|desar]{5}",
+    "datos" : "[data|DATA|dato|DATO]{4}",
+    "marketing" : "[market|MARKET|mercad|MERCAD]{6}",
+    "devops" : "[devops|DEVOPS]{6}",
+    "cloud" : "[cloud|CLOUD]{5}",
+    "backend" : "[backend|BACKEND]{7}",
+    "ingeniero" : "[engin|ENGIN|ingen|INGEN]{5}",
+    "analisis" : "[an|AN|]{2}[a|á|A|Á]{1}[l|L]{1}[i|I|Y|y]{1}",
+    "web":"[web|WEB]{3}"
+}
