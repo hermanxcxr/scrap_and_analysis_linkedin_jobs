@@ -17,7 +17,7 @@ def on_going(jobs_list,last_value,xpath,driver,delay):
     
     if last_value == 1:        
         each_job(jobs_list,driver,delay) #programa que descarga la información jobs
-        print('identificador: {1},i: {1}')
+        print('identificador: 1,i: 1')
     elif last_value > 1: 
         botones = []
         i= 2
