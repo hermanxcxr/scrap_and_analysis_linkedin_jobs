@@ -38,7 +38,7 @@ def each_job(jobs_list,driver,delay):
             job_obj.click()
 
             description = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpaths["description"]))).text
-            subcats = WebDriverWait(driver,delay).until(EC.presence_of_element_located((By.XPATH,xpaths["subcats"])))            
+            subcats = driver.find_elements_by_xpath(xpaths["subcats"])            
             
             if job_name:
                 dict["name"] = job_name
