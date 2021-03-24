@@ -121,7 +121,7 @@ def dos(job="python",location="colombia",remote=False,last_week=True):
     #avanzar a lo largo de las páginas
     jobs_list = []
     on_going(jobs_list,last_value,xpaths["paginas"],driver,delay)
-    print(jobs_list)
+    #print(jobs_list)
     excel_file = FileMaker(jobs_list,job,location,remote,last_week)
     excel_file.df_2_file()
 
